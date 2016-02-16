@@ -1,0 +1,259 @@
+﻿<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2014 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 
+        <meta name="viewport" content="user-scalable=yes, initial-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" /> -->
+		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=2.5, user-scalable=1 , target-densitydpi=device-dpi">
+    <link rel="stylesheet" type="text/css" href="css/ionic.css" />
+<!--        <link rel="stylesheet" href="css/jquery.mobile.custom.structure.min.css" />
+        <link rel="stylesheet" href="css/jquery.mobile.custom.theme.min.css" />
+		<script type="text/javascript" src="js/jquery.mobile.custom.min.js"></script>
+-->		<script type="text/javascript" src="js/cordova.js"></script>
+        <script type="text/javascript" src="js/jquery-1.12.0.js"></script>
+		<script type="text/javascript">
+<!--  -->          app.initialize();
+<!-- -->
+			$(document).ready(function()
+			 {
+				 $("#insert").click(function(){
+					 //var title=$("#title").val();
+					 //var duration=$("#duration").val();
+					 //var price=$("#price").val();
+					 //var dataString="title="+title+"&duration="+duration+"&price="+price+"&insert=";
+					 var form_data=JSON.stringify($('form').serializeObject());
+					 alert(form_data);
+						//if($.trim(title).length>0 & $.trim(duration).length>0 & $.trim(price).length>0)
+							 {
+								 $.ajax({
+								 type: "POST",
+								 url:"http://add2ads.com/jimson/database/insert.php",
+								 data: dataString,
+								 crossDomain: true,
+								 cache: false,
+								 dataType: "text json",
+								 beforeSend: function(){ $("#insert").val('Connecting...');},
+								error: function (xhr, ajaxOptions, thrownError) {
+												alert("Contact your Administration on Error xhr.status" + xhr.status  );
+												alert("Contact your Administration on Error thrownError" + thrownError);
+										},
+								success: function(data) {
+											alert("before parseJSON " + data.status + " data ->" + data);
+											//var data = JSON.stringify(JSON.parse(data));
+											//$.parseJSON(data);
+											    if( data.status == 'Successful' ) {
+														$("#insert").val('Submit');
+														$("result").val('Information submitted successfully');
+														$('#form').trigger("reset");														
+														alert("Successful alert");
+												} else {
+													alert("Error! You are trying to save a duplicate Record \n (" + data.status+")");
+													$("#insert").val('Re Submit Form data');
+										  }
+										}
+								});
+							}return false;
+					});
+			
+					$("#form").change(function() {
+								$("#insert").val('Submit');
+								$("result").val('to save data - Submit Form data to server');
+						})
+					
+					$.fn.serializeObject = function(){
+							var o = {};
+							var a = this.serializeArray();
+							$.each(a, function() {
+								if (o[this.name] !== undefined) {
+									if (!o[this.name].push) {
+										o[this.name] = [o[this.name]];
+									}
+									o[this.name].push(this.value || '');
+								} else {
+									o[this.name] = this.value || '';
+								}
+							});
+							return o;
+						};
+				});
+        </script>
+        <title>DRF Application</title>
+    </head>
+    <body>
+		<div class="bar bar-header bar-positive" style="margin-bottom:80px;">
+			<h1 class="title">DRF Form</h1>
+<!--			 <a class="button button-clear" href="readjson.html">List records</a>  -->
+		</div><br/>
+		<div class="bar bar-subheader bar-calm">
+		  <h1 class="title">SNACKING BEHAVIOURS OF CHILDREN UNDER-3 YEARS</h1>
+		</div><br/><br/>
+
+		<div class="list">
+		<form id="form" action="javascript:void(0);" method="POST">
+<!--		<form id="form" action="javascript:void(0);" method="GET">  -->
+		<input type="hidden" id="id" value=""/>
+			 <div class="card">
+  				<div class="item item-text-wrap">
+					<label>State</label>
+						<input type="text" id="state" name="state"/>
+					 <label>District</label>
+						<input type="text" id="district" name="district"/>
+					 <label>U_R_T</label>
+						<input type="text" id="u_r_t" name="u_r_t"/>
+					 <label>Village</label>
+						<input type="text" id="village" name="village"/>
+					 <label>Form Number</label>
+						<input type="text" id="form_number" name="form_number"/>
+					 <label>Name of the Official</label>
+						<input type="text" id="name_of_official" name="name_of_official"/>
+					 <label>Date of Visit</label>
+						<input type="text" id="date_of_visit" name="date_of_visit"/>
+				</div>
+			</div>
+			<div class="card">			
+			 	  <div class="item item-text-wrap">
+						<label class="item">1. Name:</label>
+							<input type="text" id="name" name="name"/>
+						<label class="item item-input item-select">
+							<div class="input-label">
+							2. Education:
+							</div>
+								<select class="list" type="select" id="education" name="education">
+								  <option value="" selected>Choose</option>
+								  <option value="Illiterate">Illiterate</option>
+								  <option value="Primary">Primary</option>
+								  <option value="Secondary">Secondary</option>
+								  <option value="Technical">Technical</option>
+								  <option value="College">College</option>
+								  <option value="None of the Above">None of the Above</option>
+								</select>
+						</label>
+						<label class="item item-input item-select">
+							<div class="input-label">
+							3. Occupation:
+							</div>
+								<select type="select" id="occupation" name="occupation">
+								  <option value="" selected>Choose</option>
+								  <option value="Wage Labour">Wage Labour</option>
+								  <option value="Agriculturist">Agriculturist</option>
+								  <option value="Private Service">Private Service</option>
+								  <option value="Government Service">Government Service</option>
+								  <option value="Others">Others</option>
+								</select>
+						</label>
+						<label class="item item-input item-select"> 
+							<div class="input-label">
+							4. Monthly income:
+							</div>
+								<select type="select" id="monthly_income" name="monthly_income">
+								  <option value="" selected>Choose</option>
+								  <option value="Less than Rs5000">Less than Rs.5000</option>
+								  <option value="Rs5001 to Rs10000">Rs.5001 - Rs.10000</option>
+								  <option value="Rs10001 to Rs30000">Rs.10001 - Rs.30000</option>
+								  <option value="Rs30001 and above">Rs.30001 and above</option>
+								</select>
+						</label>
+						<div class="item item-divider">
+							5. Eating habits:
+						</div>
+							<h3 class="item-icon-left">A. How many meals and snacks does the family eat at an average in a day?</h3>
+							<div class="row item">
+								<div class="col col-40">
+									<label class="item"><h3>1)Meals</h3></label>
+									<label class="item"><h3>2)Snacks</h3></label>
+								</div>
+								<div class="col">
+									<input type="text" id="eating_habits_meals" name="eating_habits_meals"/>
+									<br/>
+									<input type="text" id="eating_habits_snacks" name="eating_habits_snacks"/>
+								</div>
+							</div>
+							<label class="item">B. How many times do you feed your under-3 children?</label>
+								<input type="text" id="times_feed_under_3yearchild" name="times_feed_under_3yearchild"/>
+							<label class="item">C. What snacks you make at home?</label>
+								<input type="text" id="snacks_type_athome" name="snacks_type_athome"/>
+							<label class="item">D. What snacks do you purchase for a price?</label>
+								<input type="text" id="snacks_type_purchase" name="snacks_type_purchase"/>
+							<label class="item">E. What snacks from the mentioned above are eaten by the child who is under-3 years in your household?</label>
+								<input type="text" id="snacks_type_ate_3year" name="snacks_type_ate_3year"/>
+							<h3 class="item-icon-left">F. How much do you spend on food in a week for a child under 3 years? Calculate based on what the child eats as external foods. </h3>
+								<div class="row item">
+									<div class="col col-30">
+										<label class="item"><h4>1)General Food</h4></label>
+										<label class="item"><h4>2)Snacks</h4></label>
+									</div>
+									<div class="col">
+										<input type="text" id="week_food_spend_3year_General_week" name="week_food_spend_3year_General_week" placeholder="Weekly amount" /></li>
+										<br/>
+										<input type="text" id="week_food_spend_3year_snacks_week" name="week_food_spend_3year_snacks_week" placeholder="Wheekly amount"/></li>
+									</div>
+									<div class="col">
+										<input type="text" id="week_food_spend_3year_General_month" name="week_food_spend_3year_General_month"placeholder="Monthly amount" /></li>
+										<br/>
+										<input type="text" id="week_food_spend_3year_snacks_month" name="week_food_spend_3year_snacks_month"placeholder="Monthly amount" /></li>
+									</div>
+								</div>	
+							<label class="item">G. How frequently do you give snacks to the child in a day?</label>
+								<input type="text" id="frequencey_snacks" name="frequencey_snacks"/>
+							<label class="item">H. What makes you give snacks to the child?</label>
+								<input type="text" id="makes_to_give_snacks" name="makes_to_give_snacks"/>
+							<label class="item item-input item-select"> 
+								<div class="input-label2">
+									i. Who feeds (most often) the child under-3?
+								</div>
+									<select type="select" id="who_feeds_3year" name="who_feeds_3year">
+										  <option value="" selected>Choose</option>
+										  <option value="Mother">Mother</option>
+										  <option value="Father">Father</option>
+										  <option value="Grandparents">Grandparents</option>
+										  <option value="Others">Others</option>
+									</select>
+							</label>
+						<div class="item item-divider">
+							6. Community perceptions of child feeding?
+						</div>
+							<label class="item">a. What are the most important attribute in the snack that you feed the under 3 years?</label>
+								<input type="text" id="important_attribute_snack" name="important_attribute_snack"/>
+							<label class="item">b. Do you think that the snack that your under 3 years’ child have these properties?</label>
+								<input type="text" id="prope_rties" name="prope_rties"/>
+							<label class="item">c. Would you perceive the need for nutritious snacks for children under-3 years?
+													If yes and if you had choices to buy, what would be buy?</label>
+								<input type="text" id="need_for_nutritious" name="need_for_nutritious"/>
+							<label class="item">d. As of now children eat what is made for adults.
+													Will mothers be benefited  if there is an option of snack food specially made for children under-3 years?
+													If yes or no, why?</label>
+								<input type="text" id="option_food_specially_3year" name="option_food_specially_3year"/>
+							<label class="item">7.	Would you want to say anything more?</label>
+								<input type="text" id="want_to_say" name="want_to_say"/>
+				</div>
+			 </div>
+		</div> 
+			 <div class="item">
+				<input type="button" id="insert" class="button button-block button-calm" value="Register"/>
+			 </div>
+			 
+	</form>
+    </body>
+</html>
